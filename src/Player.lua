@@ -1,8 +1,8 @@
 Player = Class {}
 
 function Player:init()
-  self.x = love.graphics.getWidth() / 2
-  self.y = love.graphics.getHeight() / 2
+  self.x = love.graphics.getWidth() / 2 - (96 / 2)
+  self.y = love.graphics.getHeight() / 2 - (128 / 2)
   self.width = 96
   self.height = 128
   self.quads = generateQuads(gTextures.playersheet, 96, 128)
