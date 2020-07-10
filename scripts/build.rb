@@ -4,7 +4,7 @@ require 'dotenv'
 
 Dotenv.load
 
-PROJECT_NAME = 'locksmith'
+PROJECT_NAME = 'gmtk-2020'
 
 # https://github.com/rubyzip/rubyzip#zipping-a-directory-recursively
 def write_entries(entries, path, zipfile)

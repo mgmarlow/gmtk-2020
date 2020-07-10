@@ -15,6 +15,12 @@ function love.load()
     ['large'] = love.graphics.newFont('fonts/cardenio_modern.otf', 142)
   }
 
+  gTextures = {
+    ['playersheet'] = love.graphics.newImage(
+      'img/character_robot_sheet.png'
+    )
+  }
+
   gStateMachine =
     StateMachine {
     ['start'] = function()
