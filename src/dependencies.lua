@@ -1,6 +1,7 @@
 Class = require 'lib/class'
 Timer = require 'lib/timer'
 Signal = require 'lib/signal'
+Camera = require 'lib/camera'
 
 require 'src/constants'
 require 'src/util'
