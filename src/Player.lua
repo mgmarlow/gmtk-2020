@@ -24,12 +24,20 @@ function Player:init()
     end,
     ['run'] = function()
       return PlayerRunState({player = self})
+    end,
+    ['shoot'] = function()
+      return PlayerShootingState({player = self})
     end
   }
   self.stateMachine:change('idle')
 end
 
 function Player:update(dt, balls)
+  if love.mouse.isDown(1) and self.grabzone.shootable ~= nil then
+    self.stateMachine:change('shoot')
+    return
+  end
+
   self.grabzone:update(dt, self.x, self.y, balls)
   self.stateMachine:update(dt)
 end

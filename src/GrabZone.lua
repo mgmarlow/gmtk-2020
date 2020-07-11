@@ -26,10 +26,6 @@ function GrabZone:update(dt, x, y, balls)
     self.shootable = nil
     return
   end
-
-  if love.mouse.isDown(1) and self.shootable then
-  -- change to shooting state
-  end
 end
 
 function GrabZone:render()

@@ -19,3 +19,4 @@ require 'src/states/PauseState'
 
 require 'src/states/player/PlayerIdleState'
 require 'src/states/player/PlayerRunState'
+require 'src/states/player/PlayerShootingState'
