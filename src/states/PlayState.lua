@@ -3,7 +3,7 @@ PlayState = Class {__includes = BaseState}
 function PlayState:enter(params)
   self.player = Player {}
   -- totally arbitrary
-  self.balls = {Ball {x = 200, y = 200}}
+  self.balls = {Ball {x = 200, y = 200}, Ball {x = 400, y = 400}}
 end
 
 function PlayState:update(dt)
@@ -14,7 +14,7 @@ function PlayState:update(dt)
   self.player:update(dt, self.balls)
 
   for _, ball in ipairs(self.balls) do
-    ball:update(dt)
+    ball:update(dt, self.player)
   end
 end
 

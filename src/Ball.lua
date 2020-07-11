@@ -13,7 +13,17 @@ function Ball:init(params)
   self.movable = true
 end
 
-function Ball:update(dt)
+function Ball:update(dt, player)
+  if player.actionMachine:isActive('shoot') then
+    if player.stateMachine:isActive('run') then
+      self.movable = true
+    else
+      self.movable = false
+    end
+  else
+    self.movable = true
+  end
+
   if not self.movable then
     return
   end
