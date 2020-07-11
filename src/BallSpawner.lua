@@ -1,12 +1,14 @@
 BallSpawner = Class {}
 
 function BallSpawner:init()
-  self.timer = 5
+  self.timer = 10
   self.margin = 50
   self.x = self.margin
   self.y = self.margin
   self.width = love.graphics.getWidth() - self.margin * 2
   self.height = love.graphics.getHeight() - self.margin * 2
+
+  self.spawnSound = love.audio.newSource('sound/spawn.wav', 'static')
 end
 
 function BallSpawner:update(dt)
@@ -19,6 +21,14 @@ function BallSpawner:update(dt)
 end
 
 function BallSpawner:render()
+  love.graphics.setFont(gFonts['medium'])
+  love.graphics.printf(
+    'New ball in: ' .. string.format('%.1f', self.timer),
+    0,
+    0,
+    love.graphics.getWidth()
+  )
+
   if gDebug == true then
     love.graphics.rectangle(
       'line',
@@ -31,18 +41,21 @@ function BallSpawner:render()
 end
 
 function BallSpawner:spawn()
-  local randomX, randomY = self:getBallCoords()
+  self.spawnSound:play()
 
+  local x, y = self:getBallCoords()
   Signal.emit(
     'new_ball',
     {
-      x = randomX,
-      y = randomY
+      x = x,
+      y = y
     }
   )
 end
 
 function BallSpawner:getBallCoords()
-  -- todo: randomize within bounds
-  return 100, 100
+  local randomX = math.random(self.x + self.width)
+  local randomY = math.random(self.y + self.height)
+
+  return randomX, randomY
 end
