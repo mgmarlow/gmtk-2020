@@ -23,12 +23,19 @@ function PlayerShootingState:enter(params)
   }
 end
 
+-- TODO: Need to slow down the physics a bit while click is being held
 function PlayerShootingState:update(dt)
   self.reticle:update(dt, self.shootable)
 
+  if not self.player.grabzone.shootable then
+    -- don't fire, instead the player loses it.
+    self.player.stateMachine:change('run')
+    return
+  end
+
   if not love.mouse.isDown(1) then
     self.currentAnimation = animations.shooting
-    self.shootable.dir = self.reticle.angle
+    self.shootable:fire(self.reticle.angle)
     self.player.stateMachine:change('run')
   end
 end
