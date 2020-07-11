@@ -1,6 +1,7 @@
 PauseState = Class {__includes = BaseState}
 
 function PauseState:enter(params)
+  self.level = params.level
 end
 
 function PauseState:update(dt)
@@ -9,11 +10,16 @@ function PauseState:update(dt)
   end
 
   if love.keyboard.wasPressed('escape') then
-    gStateMachine:change('play')
+    gStateMachine:change('play', {level = self.level})
   end
 end
 
 function PauseState:render()
+  -- Render the level, but don't update it
+  if self.level ~= nil then
+    self.level:render()
+  end
+
   love.graphics.setColor(0, 0, 0, 0.6)
   love.graphics.rectangle('fill', 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
 

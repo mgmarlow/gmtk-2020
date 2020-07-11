@@ -1,29 +1,19 @@
 PlayState = Class {__includes = BaseState}
 
 function PlayState:enter(params)
-  self.player = Player {}
-  -- totally arbitrary
-  self.balls = {Ball {x = 200, y = 200}, Ball {x = 400, y = 400}}
+  self.level = params.level or Level {}
 end
 
 function PlayState:update(dt)
   if love.keyboard.wasPressed('escape') then
-    gStateMachine:change('pause')
+    gStateMachine:change('pause', {level = self.level})
   end
 
-  self.player:update(dt, self.balls)
-
-  for _, ball in ipairs(self.balls) do
-    ball:update(dt, self.player)
-  end
+  self.level:update(dt)
 end
 
 function PlayState:render()
-  self.player:render()
-
-  for _, ball in ipairs(self.balls) do
-    ball:render()
-  end
+  self.level:render()
 end
 
 function PlayState:reset()

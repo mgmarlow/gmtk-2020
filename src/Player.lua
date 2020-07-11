@@ -1,11 +1,11 @@
 Player = Class {}
 
-function Player:init()
+function Player:init(params)
+  self.x = params.x
+  self.y = params.y
   self.width = 96
   self.height = 128
   self.speed = 250
-  self.x = love.graphics.getWidth() / 2
-  self.y = love.graphics.getHeight() / 2
   self.invincible = false
 
   self.hitbox =

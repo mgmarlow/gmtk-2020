@@ -28,9 +28,8 @@ function Ball:update(dt, player)
     return
   end
 
-  self:checkWorldBounds()
-
   if self.dir ~= nil then
+    self:checkWorldBounds()
     self.x = self.x + math.cos(self.dir) * dt * self.velocity
     self.y = self.y + math.sin(self.dir) * dt * self.velocity
   end
