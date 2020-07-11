@@ -28,6 +28,7 @@ function PlayerShootingState:update(dt)
 
   if not love.mouse.isDown(1) then
     self.currentAnimation = animations.shooting
+    self.shootable.dir = self.reticle.angle
     self.player.stateMachine:change('run')
   end
 end

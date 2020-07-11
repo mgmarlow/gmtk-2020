@@ -19,6 +19,8 @@ function Reticle:update(dt, shootable)
   local normX, normY = self:getNormalizedVector()
   self.destX = self.x + normX * LINE_LENGTH
   self.destY = self.y + normY * LINE_LENGTH
+
+  self.angle = self:getAngle(self.destX, self.destY)
 end
 
 function Reticle:render()
@@ -35,6 +37,10 @@ function Reticle:render()
     self.destX,
     self.destY
   )
+end
+
+function Reticle:getAngle(destX, destY)
+  return math.atan2(destY - self.y, destX - self.x)
 end
 
 function Reticle:getNormalizedVector()
