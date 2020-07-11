@@ -34,6 +34,7 @@ function PlayerShootingState:update(dt)
   end
 
   if not love.mouse.isDown(1) then
+    -- TODO: need a timer on this animation so it actually finishes
     self.currentAnimation = animations.shooting
     self.shootable:fire(self.reticle.angle)
     self.player.stateMachine:change('run')

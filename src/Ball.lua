@@ -11,9 +11,7 @@ function Ball:init(params)
 end
 
 function Ball:update(dt)
-  if self:collidesWorldBounds() then
-    self.dir = self.dir - math.pi
-  end
+  self:checkWorldBounds()
 
   if self.dir ~= nil then
     self.x = self.x + math.cos(self.dir) * dt * self.velocity
@@ -29,20 +27,20 @@ function Ball:fire(angle)
   self.dir = angle
 end
 
-function Ball:collidesWorldBounds()
+function Ball:checkWorldBounds()
   if self.x + self.width >= love.graphics.getWidth() then
-    return true
+    self.dir = -self.dir + math.pi
   end
 
   if self.x <= 0 then
-    return true
+    self.dir = -self.dir + math.pi
   end
 
   if self.y <= 0 then
-    return true
+    self.dir = -self.dir
   end
 
   if self.y + self.height >= love.graphics.getHeight() then
-    return true
+    self.dir = -self.dir
   end
 end
