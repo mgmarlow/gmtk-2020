@@ -25,15 +25,23 @@ end
 
 -- TODO: Need to slow down the physics a bit while click is being held
 function PlayerShootingState:update(dt)
+  if self.shootable ~= nil then
+    self.shootable.velocity = 100
+  end
+
   self.reticle:update(dt, self.shootable)
 
+  -- Check grabzone since this will update to nil if the ball
+  -- goes out of range.
   if not self.player.grabzone.shootable then
-    -- don't fire, instead the player loses it.
+    self.shootable:resetVelocity()
+    -- Don't fire, instead the player loses the ball.
     self.player.stateMachine:change('run')
     return
   end
 
   if not love.mouse.isDown(1) then
+    self.player.grabzone.shootable:resetVelocity()
     -- TODO: need a timer on this animation so it actually finishes
     self.currentAnimation = animations.shooting
     self.shootable:fire(self.reticle.angle)

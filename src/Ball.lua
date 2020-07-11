@@ -1,5 +1,7 @@
 Ball = Class {}
 
+local TOP_VELOCITY = 400
+
 function Ball:init(params)
   self.x = params.x
   self.y = params.y
@@ -7,7 +9,7 @@ function Ball:init(params)
   self.height = 10
   self.dir = nil
   self.kind = 'shootable'
-  self.velocity = 300
+  self.velocity = TOP_VELOCITY
 end
 
 function Ball:update(dt)
@@ -43,4 +45,8 @@ function Ball:checkWorldBounds()
   if self.y + self.height >= love.graphics.getHeight() then
     self.dir = -self.dir
   end
+end
+
+function Ball:resetVelocity()
+  self.velocity = TOP_VELOCITY
 end
