@@ -10,7 +10,6 @@ function Ball:init(params)
   self.dir = nil
   self.kind = 'shootable'
   self.velocity = TOP_VELOCITY
-  self.movable = true
   self.grabbed = false
 
   self.bounceSound = love.audio.newSource('sound/bump.wav', 'static')
@@ -18,17 +17,9 @@ end
 
 function Ball:update(dt, player)
   if player.actionMachine:isActive('shoot') then
-    if player.stateMachine:isActive('run') then
-      self.movable = true
-    else
-      self.movable = false
-    end
+    self.velocity = 50
   else
-    self.movable = true
-  end
-
-  if not self.movable then
-    return
+    self.velocity = 400
   end
 
   if self.dir ~= nil then
