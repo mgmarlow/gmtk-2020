@@ -23,6 +23,7 @@ function PlayerIdleState:render()
     0,
     1,
     1,
-    self.player.width / 2
+    self.player.width / 2,
+    self.player.height / 2
   )
 end

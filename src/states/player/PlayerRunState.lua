@@ -64,6 +64,7 @@ function PlayerRunState:render()
     0,
     self.rightFacing and 1 or -1,
     1,
-    self.player.width / 2
+    self.player.width / 2,
+    self.player.height / 2
   )
 end

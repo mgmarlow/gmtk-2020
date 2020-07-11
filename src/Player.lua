@@ -1,12 +1,21 @@
 Player = Class {}
 
 function Player:init()
-  self.x = love.graphics.getWidth() / 2 - (96 / 2)
-  self.y = love.graphics.getHeight() / 2 - (128 / 2)
   self.width = 96
   self.height = 128
-  self.quads = generateQuads(gTextures.playersheet, 96, 128)
-  self.grabzone = GrabZone {x = self.x, y = self.y}
+  self.x = love.graphics.getWidth() / 2
+  self.y = love.graphics.getHeight() / 2
+
+  self.quads =
+    generateQuads(gTextures.playersheet, self.width, self.height)
+
+  self.grabzone =
+    GrabZone {
+    x = self.x,
+    y = self.y,
+    playerWidth = self.width,
+    playerHeight = self.height
+  }
 
   self.stateMachine =
     StateMachine {
@@ -22,7 +31,7 @@ end
 
 function Player:update(dt)
   self.stateMachine:update(dt)
-  self.grabzone:update(dt, self.x, self.y)
+  self.grabzone:update(dt, self.x, self.y, self.width, self.height)
 end
 
 function Player:render()
