@@ -12,6 +12,7 @@ require 'src/Ball'
 require 'src/GrabZone'
 require 'src/Reticle'
 require 'src/Cooldown'
+require 'src/Hitbox'
 
 -- States
 require 'src/states/BaseState'

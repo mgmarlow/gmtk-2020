@@ -6,11 +6,15 @@ function Player:init()
   self.speed = 250
   self.x = love.graphics.getWidth() / 2
   self.y = love.graphics.getHeight() / 2
-  self.hitboxX = self.x - self.width / 4
-  self.hitboxY = self.y - self.height / 4
-  self.hitboxWidth = self.width / 2
-  self.hitboxHeight = self.height / 1.5
   self.invincible = false
+
+  self.hitbox =
+    Hitbox {
+    x = self.x - self.width / 4,
+    y = self.y - self.height / 4,
+    width = self.width / 2,
+    height = self.height / 1.5
+  }
 
   self.quadIndex = 1
   self.currentAnimation = nil
@@ -113,9 +117,10 @@ function Player:update(dt, balls)
   self.grabzone:update(dt, self.x, self.y, balls)
   self.stateMachine:update(dt)
   self.actionMachine:update(dt)
-
-  self.hitboxX = self.x - self.width / 4
-  self.hitboxY = self.y + 10 - self.height / 4
+  self.hitbox:update(
+    self.x - self.width / 4,
+    self.y + 10 - self.height / 4
+  )
 end
 
 function Player:render()
@@ -123,32 +128,9 @@ function Player:render()
   self.grabzone:render()
   self.stateMachine:render()
   self.actionMachine:render()
-
-  if gDebug == true then
-    love.graphics.rectangle(
-      'line',
-      self.hitboxX,
-      self.hitboxY,
-      self.width / 2,
-      self.height / 1.5
-    )
-  end
+  self.hitbox:render()
 end
 
 function Player:collides(other)
-  if
-    self.hitboxX > other.x + other.width - 1 or
-      other.x > self.hitboxX + self.hitboxWidth - 1
-   then
-    return false
-  end
-
-  if
-    self.hitboxY > other.y + other.height - 1 or
-      other.y > self.hitboxY + self.hitboxHeight - 1
-   then
-    return false
-  end
-
-  return true
+  return self.hitbox:collides(other)
 end
