@@ -8,6 +8,8 @@ function Player:init(params)
   self.speed = 250
   self.invincible = false
 
+  self.hitSound = love.audio.newSource('sound/hit.wav', 'static')
+
   self.hitbox =
     Hitbox {
     x = self.x - self.width / 4,
@@ -65,6 +67,7 @@ function Player:init(params)
   local onHit = function()
     self.invincible = true
     self.shaken = true
+    self.hitSound:play()
 
     Timer.after(
       1,

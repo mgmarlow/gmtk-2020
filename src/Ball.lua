@@ -11,6 +11,8 @@ function Ball:init(params)
   self.kind = 'shootable'
   self.velocity = TOP_VELOCITY
   self.movable = true
+
+  self.bounceSound = love.audio.newSource('sound/bump.wav', 'static')
 end
 
 function Ball:update(dt, player)
@@ -54,20 +56,30 @@ function Ball:fire(angle)
 end
 
 function Ball:checkWorldBounds()
-  if self.x + self.width >= love.graphics.getWidth() then
+  local bounced = false
+
+  if self.x + self.width >= love.graphics.getWidth() - 1 then
+    bounced = true
     self.dir = -self.dir + math.pi
   end
 
-  if self.x <= 0 then
+  if self.x <= 1 then
+    bounced = true
     self.dir = -self.dir + math.pi
   end
 
-  if self.y <= 0 then
+  if self.y <= 1 then
+    bounced = true
     self.dir = -self.dir
   end
 
-  if self.y + self.height >= love.graphics.getHeight() then
+  if self.y + self.height >= love.graphics.getHeight() - 1 then
+    bounced = true
     self.dir = -self.dir
+  end
+
+  if bounced then
+    self.bounceSound:play()
   end
 end
 
