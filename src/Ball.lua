@@ -10,9 +10,14 @@ function Ball:init(params)
   self.dir = nil
   self.kind = 'shootable'
   self.velocity = TOP_VELOCITY
+  self.movable = true
 end
 
 function Ball:update(dt)
+  if not self.movable then
+    return
+  end
+
   self:checkWorldBounds()
 
   if self.dir ~= nil then
@@ -49,4 +54,21 @@ end
 
 function Ball:resetVelocity()
   self.velocity = TOP_VELOCITY
+end
+
+function Ball:collides(other)
+  if
+    self.x > other.x + other.width - 1 or other.x > self.x + self.width - 1
+   then
+    return false
+  end
+
+  if
+    self.y > other.y + other.height - 1 or
+      other.y > self.y + self.height - 1
+   then
+    return false
+  end
+
+  return true
 end

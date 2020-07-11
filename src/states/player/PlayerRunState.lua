@@ -44,10 +44,12 @@ function PlayerRunState:update(dt)
 
   self.player.currentAnimation =
     self.player.currentAnimation or animations.running
-  self.player.x =
-    self.player.x + (dir.x / normalLength) * self.player.speed * dt
-  self.player.y =
-    self.player.y + (dir.y / normalLength) * self.player.speed * dt
+
+  local normX = (dir.x / normalLength) * dt
+  local normY = (dir.y / normalLength) * dt
+
+  self.player.x = self.player.x + normX * self.player.speed
+  self.player.y = self.player.y + normY * self.player.speed
 end
 
 function PlayerRunState:render()

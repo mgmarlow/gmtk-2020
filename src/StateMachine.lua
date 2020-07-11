@@ -13,10 +13,12 @@ function StateMachine:init(states)
 	}
 	self.states = states or {} -- [name] -> [function that returns states]
 	self.current = self.empty
+	self.name = nil
 end
 
 function StateMachine:change(stateName, enterParams)
 	assert(self.states[stateName]) -- state must exist!
+	self.name = stateName
 	self.current:exit()
 	self.current = self.states[stateName]()
 	self.current:enter(enterParams)
@@ -28,4 +30,8 @@ end
 
 function StateMachine:render()
 	self.current:render()
+end
+
+function StateMachine:isActive(stateName)
+	return self.name == stateName
 end

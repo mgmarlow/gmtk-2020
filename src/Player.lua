@@ -47,10 +47,30 @@ function Player:init()
       return PlayerShootingState({player = self})
     end
   }
+
   self.stateMachine:change('idle')
+  self.actionMachine:change('idle')
 end
 
 function Player:update(dt, balls)
+  for _, ball in ipairs(balls) do
+    if self.actionMachine:isActive('shoot') then
+      if self.stateMachine:isActive('run') then
+        ball.movable = true
+      else
+        ball.movable = false
+      end
+    else
+      ball.movable = true
+      -- TODO: Need invincibility for a few seconds after shooting
+      -- to avoid instantly dying when releasing the ball while over it
+      if ball:collides(self) then
+        print('oh shit, he ded')
+        return
+      end
+    end
+  end
+
   if
     love.mouse.isDown(1) and self.grabzone.shootable ~= nil and
       not self.cooldown.active
