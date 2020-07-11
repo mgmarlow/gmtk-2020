@@ -6,12 +6,17 @@ function Animation:init(def)
   self.timer = 0
   self.currentFrame = 1
   self.done = false
+  self.loop = def.loop or false
 end
 
 function Animation:update(dt)
-  if self.currentFrame == #self.frames then
-    self.done = true
-    return
+  if self.currentFrame == #self.frames and self.timer > self.interval then
+    if self.loop then
+      self.currentFrame = 1
+    else
+      self.done = true
+      return
+    end
   end
 
   -- no need to update if animation is only one frame

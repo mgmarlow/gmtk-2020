@@ -19,6 +19,10 @@ function PlayerIdleState:render()
     gTextures.playersheet,
     self.player.quads[1],
     self.player.x,
-    self.player.y
+    self.player.y,
+    0,
+    1,
+    1,
+    self.player.width / 2
   )
 end
