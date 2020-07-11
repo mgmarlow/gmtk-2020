@@ -3,7 +3,7 @@ PlayerShootingState = Class {__includes = BaseState}
 local animations = {
   ['shooting'] = Animation {
     frames = {14, 15},
-    interval = 0.2
+    interval = 0.5
   }
 }
 
@@ -43,7 +43,13 @@ function PlayerShootingState:update(dt)
   if not love.mouse.isDown(1) then
     self.player.grabzone.shootable:resetVelocity()
     -- TODO: need a timer on this animation so it actually finishes
-    self.currentAnimation = animations.shooting
+    -- self.player.currentAnimation = animations.shooting
+    -- Timer.after(
+    --   0.6,
+    --   function()
+    --     self.player.currentAnimation = nil
+    --   end
+    -- )
     self.shootable:fire(self.reticle.angle)
     self.player.stateMachine:change('run')
   end
@@ -55,13 +61,9 @@ function PlayerShootingState:render()
     self.reticle:render()
   end
 
-  local quadIndex =
-    self.currentAnimation == nil and 14 or
-    self.currentAnimation:getCurrentFrame()
-
   love.graphics.draw(
     gTextures.playersheet,
-    self.player.quads[quadIndex],
+    self.player.quads[14],
     self.player.x,
     self.player.y,
     0,

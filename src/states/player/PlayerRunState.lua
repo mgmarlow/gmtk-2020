@@ -17,10 +17,6 @@ end
 function PlayerRunState:update(dt)
   local dir = {x = 0, y = 0}
 
-  if self.currentAnimation ~= nil then
-    self.currentAnimation:update(dt)
-  end
-
   if love.keyboard.isDown('a') then
     self.rightFacing = false
     dir.x = -1
@@ -40,25 +36,23 @@ function PlayerRunState:update(dt)
   end
 
   if dir.x == 0 and dir.y == 0 then
+    self.player.currentAnimation = nil
     self.player.stateMachine:change('idle')
     return
   end
 
   local normalLength = math.sqrt(dir.x ^ 2 + dir.y ^ 2)
 
-  self.currentAnimation = self.currentAnimation or animations.running
+  self.player.currentAnimation =
+    self.player.currentAnimation or animations.running
   self.player.x = self.player.x + (dir.x / normalLength) * self.speed * dt
   self.player.y = self.player.y + (dir.y / normalLength) * self.speed * dt
 end
 
 function PlayerRunState:render()
-  local quadIndex =
-    self.currentAnimation == nil and 1 or
-    self.currentAnimation:getCurrentFrame()
-
   love.graphics.draw(
     gTextures.playersheet,
-    self.player.quads[quadIndex],
+    self.player.quads[self.player.quadIndex],
     self.player.x,
     self.player.y,
     0,

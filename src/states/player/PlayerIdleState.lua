@@ -17,7 +17,7 @@ end
 function PlayerIdleState:render()
   love.graphics.draw(
     gTextures.playersheet,
-    self.player.quads[1],
+    self.player.quads[self.player.quadIndex],
     self.player.x,
     self.player.y,
     0,

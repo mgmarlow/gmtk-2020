@@ -5,7 +5,7 @@ function love.load()
     gDebug = true
   end
 
-  love.window.setTitle('my project')
+  love.window.setTitle('gmtk2020')
 
   love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
 
