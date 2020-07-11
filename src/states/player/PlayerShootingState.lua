@@ -30,6 +30,7 @@ end
 
 function PlayerShootingState:update(dt)
   if self.shootable ~= nil then
+    self.shootable.grabbed = true
     self.shootable.velocity = 100
   end
 
@@ -38,6 +39,7 @@ function PlayerShootingState:update(dt)
   -- Check grabzone since this will update to nil if the ball
   -- goes out of range.
   if not self.player.grabzone.shootable then
+    self.shootable.grabbed = false
     self.shootable:resetVelocity()
     -- Don't fire, instead the player loses the ball.
     self.player.actionMachine:change('idle')
@@ -46,10 +48,12 @@ function PlayerShootingState:update(dt)
 
   if not love.mouse.isDown(1) then
     self.player.cooldown.fill = 50
+    self.shootable.grabbed = false
     self.player.grabzone.shootable:resetVelocity()
     self.shootable:fire(self.reticle.angle)
     self.player.actionMachine:change('idle')
     self.player.invincible = true
+
     Timer.after(
       1,
       function()

@@ -11,6 +11,7 @@ function Ball:init(params)
   self.kind = 'shootable'
   self.velocity = TOP_VELOCITY
   self.movable = true
+  self.grabbed = false
 
   self.bounceSound = love.audio.newSource('sound/bump.wav', 'static')
 end
@@ -38,9 +39,7 @@ function Ball:update(dt, player)
 
   -- holy conditional
   if
-    player:collides(self) and not player.actionMachine:isActive('shoot') and
-      not player.invincible and
-      self.movable and
+    player:collides(self) and not self.grabbed and not player.invincible and
       self.dir
    then
     Signal.emit('player_hit')
