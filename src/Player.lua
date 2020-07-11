@@ -34,7 +34,10 @@ end
 
 function Player:update(dt, balls)
   if love.mouse.isDown(1) and self.grabzone.shootable ~= nil then
-    self.stateMachine:change('shoot')
+    self.stateMachine:change(
+      'shoot',
+      {shootable = self.grabzone.shootable}
+    )
     return
   end
 

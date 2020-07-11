@@ -9,6 +9,7 @@ require 'src/Animation'
 require 'src/Player'
 require 'src/Ball'
 require 'src/GrabZone'
+require 'src/Reticle'
 
 -- States
 require 'src/states/BaseState'

@@ -12,7 +12,20 @@ function PlayerShootingState:init(params)
   self.rightFacing = true
 end
 
+function PlayerShootingState:enter(params)
+  self.shootable = params.shootable
+  self.reticle =
+    Reticle {
+    x = params.shootable.x,
+    y = params.shootable.y,
+    width = params.shootable.width,
+    height = params.shootable.height
+  }
+end
+
 function PlayerShootingState:update(dt)
+  self.reticle:update(dt, self.shootable)
+
   if not love.mouse.isDown(1) then
     self.currentAnimation = animations.shooting
     self.player.stateMachine:change('run')
@@ -21,6 +34,11 @@ function PlayerShootingState:update(dt)
 end
 
 function PlayerShootingState:render()
+  -- Move into reticle
+  if self.shootable ~= nil then
+    self.reticle:render()
+  end
+
   local quadIndex =
     self.currentAnimation == nil and 14 or
     self.currentAnimation:getCurrentFrame()
