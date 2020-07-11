@@ -32,6 +32,8 @@ function Player:init()
     playerHeight = self.height
   }
 
+  self.origCameraX, self.origCameraY = gCamera:position()
+
   self.stateMachine =
     StateMachine {
     ['idle'] = function()
@@ -57,7 +59,17 @@ function Player:init()
   self.actionMachine:change('idle')
 
   local onHit = function()
-    print('im hit!')
+    self.invincible = true
+    self.shaken = true
+
+    Timer.after(
+      1,
+      function()
+        self.invincible = false
+        self.shaken = false
+        gCamera:lookAt(self.origCameraX, self.origCameraY)
+      end
+    )
   end
 
   Signal.register('player_hit', onHit)
@@ -65,6 +77,7 @@ end
 
 function Player:exit()
   Signal.clear('player_hit')
+  gCamera:lookAt(self.origCameraX, self.origCameraY)
 end
 
 function Player:update(dt, balls)
@@ -80,6 +93,16 @@ function Player:update(dt, balls)
 
   if self.currentAnimation ~= nil then
     self.currentAnimation:update(dt)
+  end
+
+  if self.shaken then
+    local min = -4
+    local max = 4
+
+    gCamera:lookAt(
+      self.origCameraX + math.random(min, max),
+      self.origCameraY + math.random(min, max)
+    )
   end
 
   self.quadIndex =
