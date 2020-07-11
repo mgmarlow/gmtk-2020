@@ -1,6 +1,9 @@
-StartState = Class {__includes = BaseState}
+GameOverState = Class {__includes = BaseState}
 
-function StartState:update(dt)
+function GameOverState:init()
+end
+
+function GameOverState:update(dt)
   if love.keyboard.wasPressed('z') then
     gStateMachine:change('play', {})
   end
@@ -10,12 +13,11 @@ function StartState:update(dt)
   end
 end
 
-function StartState:render()
-  -- title
+function GameOverState:render()
   love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setFont(gFonts['large'])
   love.graphics.printf(
-    'SUPERBALL',
+    'Game Over',
     0,
     WINDOW_HEIGHT / 3,
     WINDOW_WIDTH,
@@ -25,13 +27,10 @@ function StartState:render()
   -- instructions
   love.graphics.setFont(gFonts['medium'])
   love.graphics.printf(
-    'Press Z to start',
+    'Press Z to try again',
     0,
     WINDOW_HEIGHT / 2 + 70,
     WINDOW_WIDTH,
     'center'
   )
-
-  -- reset the color
-  love.graphics.setColor(1, 1, 1, 1)
 end

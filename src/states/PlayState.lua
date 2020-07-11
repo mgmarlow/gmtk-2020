@@ -20,4 +20,5 @@ function PlayState:reset()
 end
 
 function PlayState:exit()
+  self.level:exit()
 end

@@ -19,6 +19,7 @@ end
 
 function Level:exit()
   Signal.clear('new_ball')
+  self.player:exit()
 end
 
 function Level:update(dt)

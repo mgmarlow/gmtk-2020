@@ -15,6 +15,7 @@ require 'src/GrabZone'
 require 'src/Reticle'
 require 'src/Cooldown'
 require 'src/Hitbox'
+require 'src/LifeCounter'
 
 -- States
 require 'src/states/BaseState'
@@ -22,6 +23,7 @@ require 'src/states/BaseState'
 require 'src/states/StartState'
 require 'src/states/PlayState'
 require 'src/states/PauseState'
+require 'src/states/GameOverState'
 
 require 'src/states/player/PlayerIdleState'
 require 'src/states/player/PlayerRunState'

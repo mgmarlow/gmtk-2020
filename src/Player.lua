@@ -10,6 +10,14 @@ function Player:init(params)
 
   self.hitSound = love.audio.newSource('sound/hit.wav', 'static')
 
+  self.lifecounter =
+    LifeCounter {
+    x = self.x,
+    y = self.y,
+    width = self.width,
+    lives = 3
+  }
+
   self.hitbox =
     Hitbox {
     x = self.x - self.width / 4,
@@ -65,6 +73,17 @@ function Player:init(params)
   self.actionMachine:change('idle')
 
   local onHit = function()
+    self.lifecounter:decrement()
+
+    if self:isDead() then
+      Timer.after(
+        0.5,
+        function()
+          gStateMachine:change('game_over')
+        end
+      )
+    end
+
     self.invincible = true
     self.shaken = true
     self.hitSound:play()
@@ -116,6 +135,7 @@ function Player:update(dt, balls)
     self.currentAnimation == nil and 1 or
     self.currentAnimation:getCurrentFrame()
 
+  self.lifecounter:update(self.x, self.y)
   self.cooldown:update(dt, self.x, self.y)
   self.grabzone:update(dt, self.x, self.y, balls)
   self.stateMachine:update(dt)
@@ -127,6 +147,7 @@ function Player:update(dt, balls)
 end
 
 function Player:render()
+  self.lifecounter:render()
   self.cooldown:render()
   self.grabzone:render()
   self.stateMachine:render()
@@ -136,4 +157,8 @@ end
 
 function Player:collides(other)
   return self.hitbox:collides(other)
+end
+
+function Player:isDead()
+  return self.lifecounter:isDead()
 end

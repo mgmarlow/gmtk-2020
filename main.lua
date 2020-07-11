@@ -5,7 +5,7 @@ function love.load()
     gDebug = true
   end
 
-  love.window.setTitle('gmtk2020')
+  love.window.setTitle('SUPERBALL')
 
   love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)
 
@@ -35,6 +35,9 @@ function love.load()
     end,
     ['pause'] = function()
       return PauseState()
+    end,
+    ['game_over'] = function()
+      return GameOverState()
     end
   }
   gStateMachine:change('start')
