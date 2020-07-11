@@ -14,17 +14,18 @@ function GrabZone:update(dt, x, y, balls)
   self.x = x - self.width / 2
   self.y = y - self.playerHeight / 2
 
-  local newShootable = false
+  if self.shootable ~= nil then
+    if not self:collides(self.shootable) then
+      self.shootable = nil
+    end
+
+    return
+  end
+
   for _, ball in ipairs(balls) do
     if self:collides(ball) then
       self.shootable = ball
-      newShootable = true
     end
-  end
-
-  if not newShootable then
-    self.shootable = nil
-    return
   end
 end
 
