@@ -38,7 +38,6 @@ function Player:update(dt, balls)
       'shoot',
       {shootable = self.grabzone.shootable}
     )
-    return
   end
 
   self.grabzone:update(dt, self.x, self.y, balls)

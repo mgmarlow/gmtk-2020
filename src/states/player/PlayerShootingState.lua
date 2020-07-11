@@ -29,7 +29,6 @@ function PlayerShootingState:update(dt)
   if not love.mouse.isDown(1) then
     self.currentAnimation = animations.shooting
     self.player.stateMachine:change('run')
-    return
   end
 end
 
