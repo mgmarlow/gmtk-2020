@@ -50,21 +50,25 @@ function Ball:checkWorldBounds()
 
   if self.x + self.width >= love.graphics.getWidth() - 1 then
     bounced = true
+    self.x = love.graphics.getWidth() - 1 - self.width
     self.dir = -self.dir + math.pi
   end
 
   if self.x <= 1 then
     bounced = true
+    self.x = 1 + self.width
     self.dir = -self.dir + math.pi
   end
 
   if self.y <= 1 then
     bounced = true
+    self.y = 1 + self.height
     self.dir = -self.dir
   end
 
   if self.y + self.height >= love.graphics.getHeight() - 1 then
     bounced = true
+    self.y = love.graphics.getHeight() - 1 - self.height
     self.dir = -self.dir
   end
 
