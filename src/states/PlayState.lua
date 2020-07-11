@@ -3,7 +3,7 @@ PlayState = Class {__includes = BaseState}
 function PlayState:enter(params)
   self.player = Player {}
   -- totally arbitrary
-  self.ball = Ball {x = 200, y = 200}
+  self.balls = {Ball {x = 200, y = 200}}
 end
 
 function PlayState:update(dt)
@@ -11,13 +11,19 @@ function PlayState:update(dt)
     gStateMachine:change('pause')
   end
 
-  self.player:update(dt)
-  self.ball:update(dt)
+  self.player:update(dt, self.balls)
+
+  for _, ball in ipairs(self.balls) do
+    ball:update(dt)
+  end
 end
 
 function PlayState:render()
   self.player:render()
-  self.ball:render()
+
+  for _, ball in ipairs(self.balls) do
+    ball:render()
+  end
 end
 
 function PlayState:reset()

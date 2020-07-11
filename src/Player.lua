@@ -29,12 +29,12 @@ function Player:init()
   self.stateMachine:change('idle')
 end
 
-function Player:update(dt)
+function Player:update(dt, balls)
+  self.grabzone:update(dt, self.x, self.y, balls)
   self.stateMachine:update(dt)
-  self.grabzone:update(dt, self.x, self.y, self.width, self.height)
 end
 
 function Player:render()
-  self.stateMachine:render()
   self.grabzone:render()
+  self.stateMachine:render()
 end
