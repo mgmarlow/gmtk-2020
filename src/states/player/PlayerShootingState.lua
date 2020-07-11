@@ -13,6 +13,7 @@ function PlayerShootingState:init(params)
 end
 
 function PlayerShootingState:enter(params)
+  self.player.speed = 50
   self.shootable = params.shootable
   self.reticle =
     Reticle {
@@ -23,7 +24,10 @@ function PlayerShootingState:enter(params)
   }
 end
 
--- TODO: Need to slow down the physics a bit while click is being held
+function PlayerShootingState:exit()
+  self.player.speed = 250
+end
+
 function PlayerShootingState:update(dt)
   if self.shootable ~= nil then
     self.shootable.velocity = 100
@@ -36,22 +40,14 @@ function PlayerShootingState:update(dt)
   if not self.player.grabzone.shootable then
     self.shootable:resetVelocity()
     -- Don't fire, instead the player loses the ball.
-    self.player.stateMachine:change('run')
+    self.player.actionMachine:change('idle')
     return
   end
 
   if not love.mouse.isDown(1) then
     self.player.grabzone.shootable:resetVelocity()
-    -- TODO: need a timer on this animation so it actually finishes
-    -- self.player.currentAnimation = animations.shooting
-    -- Timer.after(
-    --   0.6,
-    --   function()
-    --     self.player.currentAnimation = nil
-    --   end
-    -- )
     self.shootable:fire(self.reticle.angle)
-    self.player.stateMachine:change('run')
+    self.player.actionMachine:change('idle')
   end
 end
 
@@ -60,16 +56,4 @@ function PlayerShootingState:render()
   if self.shootable ~= nil then
     self.reticle:render()
   end
-
-  love.graphics.draw(
-    gTextures.playersheet,
-    self.player.quads[14],
-    self.player.x,
-    self.player.y,
-    0,
-    self.rightFacing and 1 or -1,
-    1,
-    self.player.width / 2,
-    self.player.height / 2
-  )
 end

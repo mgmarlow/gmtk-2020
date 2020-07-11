@@ -10,7 +10,6 @@ local animations = {
 
 function PlayerRunState:init(params)
   self.player = params.player
-  self.speed = 250
   self.rightFacing = true
 end
 
@@ -45,8 +44,10 @@ function PlayerRunState:update(dt)
 
   self.player.currentAnimation =
     self.player.currentAnimation or animations.running
-  self.player.x = self.player.x + (dir.x / normalLength) * self.speed * dt
-  self.player.y = self.player.y + (dir.y / normalLength) * self.speed * dt
+  self.player.x =
+    self.player.x + (dir.x / normalLength) * self.player.speed * dt
+  self.player.y =
+    self.player.y + (dir.y / normalLength) * self.player.speed * dt
 end
 
 function PlayerRunState:render()
