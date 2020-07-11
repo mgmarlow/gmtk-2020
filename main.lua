@@ -1,6 +1,10 @@
 require 'src/dependencies'
 
 function love.load()
+  if arg[2] == '--console' then
+    gDebug = true
+  end
+
   love.window.setTitle('my project')
 
   love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT)

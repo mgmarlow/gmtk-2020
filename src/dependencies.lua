@@ -7,6 +7,8 @@ require 'src/util'
 require 'src/StateMachine'
 require 'src/Animation'
 require 'src/Player'
+require 'src/Ball'
+require 'src/GrabZone'
 
 -- States
 require 'src/states/BaseState'

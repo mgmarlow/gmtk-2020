@@ -6,6 +6,7 @@ function Player:init()
   self.width = 96
   self.height = 128
   self.quads = generateQuads(gTextures.playersheet, 96, 128)
+  self.grabzone = GrabZone {x = self.x, y = self.y}
 
   self.stateMachine =
     StateMachine {
@@ -21,8 +22,10 @@ end
 
 function Player:update(dt)
   self.stateMachine:update(dt)
+  self.grabzone:update(dt, self.x, self.y)
 end
 
-function Player:render(dt)
-  self.stateMachine:render(dt)
+function Player:render()
+  self.stateMachine:render()
+  self.grabzone:render()
 end
