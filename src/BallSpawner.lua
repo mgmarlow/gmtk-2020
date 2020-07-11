@@ -13,7 +13,7 @@ end
 
 function BallSpawner:update(dt)
   if self.timer <= 0 then
-    self.timer = 5
+    self.timer = 10
     self:spawn()
   end
 
