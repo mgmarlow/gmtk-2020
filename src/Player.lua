@@ -13,6 +13,12 @@ function Player:init()
   self.quads =
     generateQuads(gTextures.playersheet, self.width, self.height)
 
+  self.cooldown =
+    Cooldown {
+    x = self.x,
+    y = self.y
+  }
+
   self.grabzone =
     GrabZone {
     x = self.x,
@@ -45,7 +51,10 @@ function Player:init()
 end
 
 function Player:update(dt, balls)
-  if love.mouse.isDown(1) and self.grabzone.shootable ~= nil then
+  if
+    love.mouse.isDown(1) and self.grabzone.shootable ~= nil and
+      not self.cooldown.active
+   then
     self.actionMachine:change(
       'shoot',
       {shootable = self.grabzone.shootable}
@@ -60,12 +69,14 @@ function Player:update(dt, balls)
     self.currentAnimation == nil and 1 or
     self.currentAnimation:getCurrentFrame()
 
+  self.cooldown:update(dt, self.x, self.y)
   self.grabzone:update(dt, self.x, self.y, balls)
   self.stateMachine:update(dt)
   self.actionMachine:update(dt)
 end
 
 function Player:render()
+  self.cooldown:render()
   self.grabzone:render()
   self.stateMachine:render()
   self.actionMachine:render()

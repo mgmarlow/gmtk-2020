@@ -45,6 +45,7 @@ function PlayerShootingState:update(dt)
   end
 
   if not love.mouse.isDown(1) then
+    self.player.cooldown.fill = 50
     self.player.grabzone.shootable:resetVelocity()
     self.shootable:fire(self.reticle.angle)
     self.player.actionMachine:change('idle')
