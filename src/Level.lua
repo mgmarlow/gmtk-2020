@@ -2,14 +2,27 @@ Level = Class {}
 
 function Level:init()
   self.balls = self:initializeBalls()
+  self.ballSpawner = BallSpawner {}
   self.player =
     Player {
     x = love.graphics.getWidth() / 4,
     y = love.graphics.getHeight() / 2
   }
+
+  Signal.register(
+    'new_ball',
+    function(params)
+      table.insert(self.balls, Ball {x = params.x, y = params.y})
+    end
+  )
+end
+
+function Level:exit()
+  Signal.clear('new_ball')
 end
 
 function Level:update(dt)
+  self.ballSpawner:update(dt, self.balls)
   self.player:update(dt, self.balls)
 
   for _, ball in ipairs(self.balls) do
@@ -18,6 +31,7 @@ function Level:update(dt)
 end
 
 function Level:render()
+  self.ballSpawner:render()
   self.player:render()
 
   for _, ball in ipairs(self.balls) do
