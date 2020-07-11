@@ -34,6 +34,16 @@ function Ball:update(dt, player)
     self.x = self.x + math.cos(self.dir) * dt * self.velocity
     self.y = self.y + math.sin(self.dir) * dt * self.velocity
   end
+
+  -- holy conditional
+  if
+    player:collides(self) and not player.actionMachine:isActive('shoot') and
+      not player.invincible and
+      self.movable and
+      self.dir
+   then
+    Signal.emit('player_hit')
+  end
 end
 
 function Ball:render(dt)

@@ -39,6 +39,9 @@ function love.load()
   }
   gStateMachine:change('start')
 
+  gCamera =
+    Camera(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2)
+
   love.keyboard.keysPressed = {}
 end
 
@@ -63,5 +66,7 @@ end
 
 function love.draw()
   love.graphics.setBackgroundColor(45 / 255, 77 / 255, 149 / 255, 50 / 100)
+  gCamera:attach()
   gStateMachine:render()
+  gCamera:detach()
 end

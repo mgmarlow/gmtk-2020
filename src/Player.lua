@@ -6,6 +6,11 @@ function Player:init()
   self.speed = 250
   self.x = love.graphics.getWidth() / 2
   self.y = love.graphics.getHeight() / 2
+  self.hitboxX = self.x - self.width / 4
+  self.hitboxY = self.y - self.height / 4
+  self.hitboxWidth = self.width / 2
+  self.hitboxHeight = self.height / 1.5
+  self.invincible = false
 
   self.quadIndex = 1
   self.currentAnimation = nil
@@ -50,18 +55,19 @@ function Player:init()
 
   self.stateMachine:change('idle')
   self.actionMachine:change('idle')
+
+  local onHit = function()
+    print('im hit!')
+  end
+
+  Signal.register('player_hit', onHit)
+end
+
+function Player:exit()
+  Signal.clear('player_hit')
 end
 
 function Player:update(dt, balls)
-  if not self.actionMachine:isActive('shoot') then
-  -- TODO: Need invincibility for a few seconds after shooting
-  -- to avoid instantly dying when releasing the ball while over it
-  -- if ball:collides(self) then
-  --   print('oh shit, he ded')
-  --   return
-  -- end
-  end
-
   if
     love.mouse.isDown(1) and self.grabzone.shootable ~= nil and
       not self.cooldown.active
@@ -84,6 +90,9 @@ function Player:update(dt, balls)
   self.grabzone:update(dt, self.x, self.y, balls)
   self.stateMachine:update(dt)
   self.actionMachine:update(dt)
+
+  self.hitboxX = self.x - self.width / 4
+  self.hitboxY = self.y + 10 - self.height / 4
 end
 
 function Player:render()
@@ -91,4 +100,32 @@ function Player:render()
   self.grabzone:render()
   self.stateMachine:render()
   self.actionMachine:render()
+
+  if gDebug == true then
+    love.graphics.rectangle(
+      'line',
+      self.hitboxX,
+      self.hitboxY,
+      self.width / 2,
+      self.height / 1.5
+    )
+  end
+end
+
+function Player:collides(other)
+  if
+    self.hitboxX > other.x + other.width - 1 or
+      other.x > self.hitboxX + self.hitboxWidth - 1
+   then
+    return false
+  end
+
+  if
+    self.hitboxY > other.y + other.height - 1 or
+      other.y > self.hitboxY + self.hitboxHeight - 1
+   then
+    return false
+  end
+
+  return true
 end
