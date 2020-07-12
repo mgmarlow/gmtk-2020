@@ -126,8 +126,8 @@ function Player:update(dt, balls)
     local max = 4
 
     gCamera:lookAt(
-      self.origCameraX + math.random(min, max),
-      self.origCameraY + math.random(min, max)
+      self.origCameraX + love.math.random(min, max),
+      self.origCameraY + love.math.random(min, max)
     )
   end
 

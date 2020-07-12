@@ -2,6 +2,7 @@ Level = Class {}
 
 function Level:init()
   self.balls = self:initializeBalls()
+  self.enemies = self:initializeEnemies()
   self.ballSpawner = BallSpawner {}
   self.player =
     Player {
@@ -12,7 +13,7 @@ function Level:init()
   Signal.register(
     'new_ball',
     function(params)
-      table.insert(self.balls, Ball {x = params.x, y = params.y})
+      table.insert(self.balls, Ball(params))
     end
   )
 end
@@ -29,6 +30,18 @@ function Level:update(dt)
   for _, ball in ipairs(self.balls) do
     ball:update(dt, self.player)
   end
+
+  local numDead = 0
+  for _, enemy in ipairs(self.enemies) do
+    if enemy.dead then
+      numDead = numDead + 1
+    end
+    enemy:update(dt, self.player, self.enemies, self.balls)
+  end
+
+  if numDead == #self.enemies then
+    print('win!')
+  end
 end
 
 function Level:render()
@@ -37,6 +50,10 @@ function Level:render()
 
   for _, ball in ipairs(self.balls) do
     ball:render()
+  end
+
+  for _, enemy in ipairs(self.enemies) do
+    enemy:render()
   end
 end
 
@@ -50,5 +67,15 @@ function Level:initializeBalls()
     Ball {x = ballX, y = 300 - 5},
     Ball {x = ballX, y = 450 - 5},
     Ball {x = ballX, y = 600 - 5}
+  }
+end
+
+function Level:initializeEnemies()
+  local enemyX = love.graphics.getWidth() - 100 - (96 / 2)
+  local enemyY = love.graphics.getHeight() / 3 - (128 / 2)
+
+  return {
+    Enemy {x = enemyX, y = enemyY},
+    Enemy {x = enemyX, y = enemyY * 2 + 100}
   }
 end

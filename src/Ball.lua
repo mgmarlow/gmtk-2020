@@ -5,9 +5,10 @@ local TOP_VELOCITY = 400
 function Ball:init(params)
   self.x = params.x
   self.y = params.y
+  self.faction = params.faction or 'player_ball'
   self.width = 10
   self.height = 10
-  self.dir = nil
+  self.dir = params.dir or nil
   self.kind = 'shootable'
   self.velocity = TOP_VELOCITY
   self.grabbed = false
@@ -38,7 +39,14 @@ function Ball:update(dt, player)
 end
 
 function Ball:render(dt)
+  if self.faction == 'enemy_ball' then
+    love.graphics.setColor(1, 0, 0, 1)
+  else
+    love.graphics.setColor(1, 1, 1, 1)
+  end
+
   love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
+  love.graphics.setColor(1, 1, 1, 1)
 end
 
 function Ball:fire(angle)

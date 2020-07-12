@@ -22,6 +22,9 @@ function love.load()
   gTextures = {
     ['playersheet'] = love.graphics.newImage(
       'img/character_robot_sheet.png'
+    ),
+    ['enemysheet'] = love.graphics.newImage(
+      'img/character_zombie_sheet.png'
     )
   }
 

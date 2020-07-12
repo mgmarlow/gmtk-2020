@@ -54,8 +54,8 @@ function BallSpawner:spawn()
 end
 
 function BallSpawner:getBallCoords()
-  local randomX = math.random(self.x + self.width)
-  local randomY = math.random(self.y + self.height)
+  local randomX = love.math.random(self.x + self.width)
+  local randomY = love.math.random(self.y + self.height)
 
   return randomX, randomY
 end
