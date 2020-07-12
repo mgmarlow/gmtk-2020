@@ -40,7 +40,7 @@ function Level:update(dt)
   end
 
   if numDead == #self.enemies then
-    print('win!')
+    gStateMachine:change('victory')
   end
 end
 

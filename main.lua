@@ -41,6 +41,9 @@ function love.load()
     end,
     ['game_over'] = function()
       return GameOverState()
+    end,
+    ['victory'] = function()
+      return VictoryState()
     end
   }
   gStateMachine:change('start')

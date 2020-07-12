@@ -25,6 +25,7 @@ require 'src/states/StartState'
 require 'src/states/PlayState'
 require 'src/states/PauseState'
 require 'src/states/GameOverState'
+require 'src/states/VictoryState'
 
 require 'src/states/player/PlayerIdleState'
 require 'src/states/player/PlayerRunState'
