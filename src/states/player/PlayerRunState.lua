@@ -48,8 +48,16 @@ function PlayerRunState:update(dt)
   local normX = (dir.x / normalLength) * dt
   local normY = (dir.y / normalLength) * dt
 
-  self.player.x = self.player.x + normX * self.player.speed
-  self.player.y = self.player.y + normY * self.player.speed
+  local nextX = self.player.x + normX * self.player.speed
+  local nextY = self.player.y + normY * self.player.speed
+
+  if not self:outsideXBounds(nextX) then
+    self.player.x = nextX
+  end
+
+  if not self:outsideYBounds(nextY) then
+    self.player.y = nextY
+  end
 end
 
 function PlayerRunState:render()
@@ -64,4 +72,28 @@ function PlayerRunState:render()
     self.player.width / 2,
     self.player.height / 2
   )
+end
+
+function PlayerRunState:outsideXBounds(destX)
+  if destX + self.player.width / 2 >= love.graphics.getWidth() - 1 then
+    return true
+  end
+
+  if destX - self.player.width / 2 <= 1 then
+    return true
+  end
+
+  return false
+end
+
+function PlayerRunState:outsideYBounds(destY)
+  if destY - self.player.height / 2 <= 1 then
+    return true
+  end
+
+  if destY + self.player.height / 2 >= love.graphics.getHeight() - 1 then
+    return true
+  end
+
+  return false
 end

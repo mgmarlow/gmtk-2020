@@ -60,6 +60,7 @@ end
 clean
 build_zip
 copy_dependencies
-fuse
-distribute
+# These aren't working, what's up? The fuse doesn't appear to work.
+# fuse
+# distribute
 
