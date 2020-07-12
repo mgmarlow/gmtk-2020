@@ -34,7 +34,8 @@ function Ball:update(dt, player, enemies)
   if
     player:collides(self) and not self.colliding and not self.grabbed and
       not player.invincible and
-      self.dir
+      self.dir and
+      self.faction == 'enemy_ball'
    then
     self.colliding = true
     Signal.emit('player_hit')
