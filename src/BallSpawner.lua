@@ -11,13 +11,17 @@ function BallSpawner:init()
   self.spawnSound = love.audio.newSource('sound/spawn.wav', 'static')
 end
 
-function BallSpawner:update(dt)
+function BallSpawner:update(dt, player)
   if self.timer <= 0 then
     self.timer = 10
     self:spawn()
   end
 
-  self.timer = self.timer - dt
+  if player.stateMachine:isActive('run') then
+    self.timer = self.timer - dt
+  else
+    self.timer = self.timer - dt / 10
+  end
 end
 
 function BallSpawner:render()

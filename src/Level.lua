@@ -28,8 +28,8 @@ function Level:exit()
 end
 
 function Level:update(dt)
-  self.ballSpawner:update(dt, self.balls)
   self.player:update(dt, self.balls)
+  self.ballSpawner:update(dt, self.player)
 
   for _, ball in ipairs(self.balls) do
     ball:update(dt, self.player, self.enemies)
