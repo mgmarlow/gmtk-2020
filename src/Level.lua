@@ -76,7 +76,7 @@ end
 
 function Level:initializeEnemies()
   local enemyX = love.graphics.getWidth() - 100 - (96 / 2)
-  local enemyY = love.graphics.getHeight() / 3 - (128 / 2)
+  local enemyY = love.graphics.getHeight() / 3 - (130 / 2)
 
   return {
     Enemy {x = enemyX, y = enemyY},

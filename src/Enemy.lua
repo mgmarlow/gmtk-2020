@@ -22,7 +22,7 @@ function Enemy:init(params)
   self.movementChangeTimer = self.movementChangeOriginal
   self.shootTimer = SHOOT_TIMER
   self.width = 96
-  self.height = 128
+  self.height = 130
   self.speed = 250
   self.rightFacing = false
   self.quadIndex = 1

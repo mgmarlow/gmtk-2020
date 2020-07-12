@@ -4,7 +4,7 @@ function Player:init(params)
   self.x = params.x
   self.y = params.y
   self.width = 96
-  self.height = 128
+  self.height = 130
   self.speed = 250
   self.invincible = false
 
