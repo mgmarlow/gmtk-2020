@@ -17,7 +17,12 @@ function BallSpawner:update(dt, player)
     self:spawn()
   end
 
-  if player.stateMachine:isActive('run') then
+  if
+    player.stateMachine:isActive('run') and
+      player.actionMachine:isActive('shoot')
+   then
+    self.timer = self.timer - dt / 4
+  elseif player.stateMachine:isActive('run') then
     self.timer = self.timer - dt
   else
     self.timer = self.timer - dt / 10

@@ -87,7 +87,13 @@ function Enemy:update(dt, player)
   self.currentAnimation = self.currentAnimation or animations.running
   self.currentAnimation:update(dt)
 
-  if player.stateMachine:isActive('run') then
+  if
+    player.stateMachine:isActive('run') and
+      player.actionMachine:isActive('shoot')
+   then
+    self.speed = 250 / 4
+    self.currentAnimation.interval = 0.7
+  elseif player.stateMachine:isActive('run') then
     self.speed = 250
     self.currentAnimation.interval = 0.3
   else

@@ -18,7 +18,12 @@ function Ball:init(params)
 end
 
 function Ball:update(dt, player, enemies)
-  if player.stateMachine:isActive('run') then
+  if
+    player.stateMachine:isActive('run') and
+      player.actionMachine:isActive('shoot')
+   then
+    self.velocity = 50
+  elseif player.stateMachine:isActive('run') then
     self.velocity = 400
   else
     self.velocity = 10
