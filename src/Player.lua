@@ -136,7 +136,12 @@ function Player:update(dt, balls)
     self.currentAnimation:getCurrentFrame()
 
   self.lifecounter:update(self.x, self.y)
-  self.cooldown:update(dt, self.x, self.y)
+  self.cooldown:update(
+    dt,
+    self.x,
+    self.y,
+    self.stateMachine:isActive('run')
+  )
   self.grabzone:update(dt, self.x, self.y, balls)
   self.stateMachine:update(dt)
   self.actionMachine:update(dt)

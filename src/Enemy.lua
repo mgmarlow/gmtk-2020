@@ -50,17 +50,49 @@ function Enemy:init(params)
     width = self.width / 2 + 20,
     height = self.height / 1.5
   }
+
+  local onHit = function(params)
+    if params.enemy == self then
+      self.hitSound:play()
+      self.lifecounter:decrement()
+
+      if self.lifecounter:isDead() then
+        self.dead = true
+        self.deadSound:play()
+      end
+
+      self.invincible = true
+
+      Timer.after(
+        2,
+        function()
+          self.invincible = false
+        end
+      )
+    end
+  end
+
+  Signal.register('enemy_hit', onHit)
 end
 
-function Enemy:update(dt, player, enemies, balls)
+function Enemy:exit()
+  Signal.clear('enemy_hit')
+end
+
+function Enemy:update(dt, player)
   if self.dead then
     return
   end
 
-  if player.actionMachine:isActive('shoot') then
-    self.speed = 50
-  else
+  self.currentAnimation = self.currentAnimation or animations.running
+  self.currentAnimation:update(dt)
+
+  if player.stateMachine:isActive('run') then
     self.speed = 250
+    self.currentAnimation.interval = 0.3
+  else
+    self.speed = 10
+    self.currentAnimation.interval = 1
   end
 
   if self.movementChangeTimer <= 0 then
@@ -86,9 +118,6 @@ function Enemy:update(dt, player, enemies, balls)
 
   self:checkWorldBounds()
 
-  self.currentAnimation = self.currentAnimation or animations.running
-  self.currentAnimation:update(dt)
-
   self.hitbox:update(
     self.x - self.width / 3,
     self.y + 10 - self.height / 4
@@ -97,36 +126,6 @@ function Enemy:update(dt, player, enemies, balls)
   self.quadIndex =
     self.currentAnimation == nil and 1 or
     self.currentAnimation:getCurrentFrame()
-
-  for _, ball in ipairs(balls) do
-    if
-      not self.invincible and ball.faction == 'player_ball' and
-        self.hitbox:collides(ball)
-     then
-      self.hitSound:play()
-      self.lifecounter:decrement()
-
-      if self.lifecounter:isDead() then
-        self.dead = true
-        self.deadSound:play()
-      end
-
-      self.invincible = true
-
-      Timer.after(
-        2,
-        function()
-          self.invincible = false
-        end
-      )
-    end
-  end
-
-  -- for _, enemy in ipairs(enemies) do
-  --   if enemy ~= self and self:collides(enemy) then
-  --     self.dir = {x = love.math.random(), y = love.math.random()}
-  --   end
-  -- end
 
   self.lifecounter:update(self.x, self.y)
 
@@ -165,30 +164,6 @@ function Enemy:render()
   )
 end
 
--- function Enemy:getNearest(balls)
---   local nearestObject
---   local nearestDistance = math.huge
-
---   for _, obj in ipairs(balls) do
---     -- Don't worry about balls that are in flight,
---     -- only pickup stationary ones.
---     if obj.dir == nil then
---       local distance = self:getSquaredDistance(obj)
---       if distance < nearestDistance then
---         nearestObject = obj
---         nearestDistance = distance
---       end
---     end
---   end
-
---   return nearestObject
--- end
-
--- function Enemy:getSquaredDistance(other)
---   local dx, dy = self.x - other.x, self.y - other.y
---   return dx * dx + dy * dy
--- end
-
 function Enemy:checkWorldBounds()
   local bounced = false
 
@@ -222,18 +197,5 @@ function Enemy:getAngle(destX, destY)
 end
 
 function Enemy:collides(other)
-  if
-    self.x > other.x + other.width - 1 or other.x > self.x + self.width - 1
-   then
-    return false
-  end
-
-  if
-    self.y > other.y + other.height - 1 or
-      other.y > self.y + self.height - 1
-   then
-    return false
-  end
-
-  return true
+  return self.hitbox:collides(other)
 end

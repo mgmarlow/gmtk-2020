@@ -12,15 +12,16 @@ function Ball:init(params)
   self.kind = 'shootable'
   self.velocity = TOP_VELOCITY
   self.grabbed = false
+  self.colliding = false
 
   self.bounceSound = love.audio.newSource('sound/bump.wav', 'static')
 end
 
-function Ball:update(dt, player)
-  if player.actionMachine:isActive('shoot') then
-    self.velocity = 50
-  else
+function Ball:update(dt, player, enemies)
+  if player.stateMachine:isActive('run') then
     self.velocity = 400
+  else
+    self.velocity = 10
   end
 
   if self.dir ~= nil then
@@ -31,10 +32,27 @@ function Ball:update(dt, player)
 
   -- holy conditional
   if
-    player:collides(self) and not self.grabbed and not player.invincible and
+    player:collides(self) and not self.colliding and not self.grabbed and
+      not player.invincible and
       self.dir
    then
+    self.colliding = true
     Signal.emit('player_hit')
+  end
+
+  for _, enemy in ipairs(enemies) do
+    if
+      enemy:collides(self) and not self.colliding and not self.grabbed and
+        not enemy.invincible and
+        self.dir and
+        self.faction == 'player_ball'
+     then
+      self.colliding = true
+      Signal.emit('enemy_hit', {enemy = enemy})
+    elseif not player:collides(self) then
+      -- Reset all colliding states
+      self.colliding = false
+    end
   end
 end
 

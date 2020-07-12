@@ -8,13 +8,20 @@ function Cooldown:init(params)
   self.active = false
 end
 
-function Cooldown:update(dt, x, y)
+function Cooldown:update(dt, x, y, isRunning)
+  local rate = 1
+  if isRunning then
+    rate = 20
+  else
+    rate = 1
+  end
+
   self.x = x
   self.y = y
 
   if self.fill > 0 then
     self.active = true
-    self.fill = self.fill - 20 * dt
+    self.fill = self.fill - rate * dt
   end
 
   if self.fill <= 0 then

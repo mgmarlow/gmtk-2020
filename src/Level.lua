@@ -21,6 +21,10 @@ end
 function Level:exit()
   Signal.clear('new_ball')
   self.player:exit()
+
+  for _, enemy in ipairs(self.enemies) do
+    enemy:exit()
+  end
 end
 
 function Level:update(dt)
@@ -28,7 +32,7 @@ function Level:update(dt)
   self.player:update(dt, self.balls)
 
   for _, ball in ipairs(self.balls) do
-    ball:update(dt, self.player)
+    ball:update(dt, self.player, self.enemies)
   end
 
   local numDead = 0
@@ -36,7 +40,7 @@ function Level:update(dt)
     if enemy.dead then
       numDead = numDead + 1
     end
-    enemy:update(dt, self.player, self.enemies, self.balls)
+    enemy:update(dt, self.player)
   end
 
   if numDead == #self.enemies then
