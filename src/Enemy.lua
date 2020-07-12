@@ -30,6 +30,9 @@ function Enemy:init(params)
   self.invincible = false
   self.quads = generateQuads(gTextures.enemysheet, self.width, self.height)
 
+  self.hitSound = love.audio.newSource('sound/enemy_hit.wav', 'static')
+  self.deadSound = love.audio.newSource('sound/enemy_dead.wav', 'static')
+
   self.dir = {x = love.math.random(), y = love.math.random()}
 
   self.lifecounter =
@@ -100,10 +103,12 @@ function Enemy:update(dt, player, enemies, balls)
       not self.invincible and ball.faction == 'player_ball' and
         self.hitbox:collides(ball)
      then
+      self.hitSound:play()
       self.lifecounter:decrement()
 
       if self.lifecounter:isDead() then
         self.dead = true
+        self.deadSound:play()
       end
 
       self.invincible = true
